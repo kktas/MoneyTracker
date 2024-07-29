@@ -1,0 +1,52 @@
+﻿@using MoneyTracker.ViewModels.EntryVM
+@model EntryCreatePageVM
+
+@{
+    ViewBag.Title = "Yeni Kayıt";
+}
+
+<h3>@(ViewBag.Title)</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <form id="createEntryForm" class="form-control v-100 h-100" asp-action="Create" asp-controller="Entry">
+                <!-- Dropdown for EntryTypes -->
+                <div class="form-group">
+                    <label asp-for="CreateEntryVM.EntryTypeId"></label>
+                    <select asp-for="CreateEntryVM.EntryTypeId" asp-items="Model.EntryTypes" class="form-control"></select>
+                    <span asp-validation-for="CreateEntryVM.EntryTypeId" class="text-danger"></span>
+                </div>
+                <!-- Dropdown for Currencies -->
+                <div class="form-group">
+                    <label asp-for="CreateEntryVM.CurrencyId"></label>
+                    <select asp-for="CreateEntryVM.CurrencyId" asp-items="Model.Currencies" class="form-control"></select>
+                    <span asp-validation-for="CreateEntryVM.CurrencyId" class="text-danger"></span>
+                </div>
+                <!-- Number Box for Amount -->
+                <div class="form-group">
+                    <label asp-for="CreateEntryVM.Amount"></label>
+                    <input asp-for="CreateEntryVM.Amount" type="number" class="form-control" />
+                    <span asp-validation-for="CreateEntryVM.Amount" class="text-danger"></span>
+                </div>
+                <!-- TextBox for Description-->
+                <div class="form-group">
+                    <label asp-for="CreateEntryVM.Description"></label>
+                    <input asp-for="CreateEntryVM.Description" class="form-control" />
+                    <span asp-validation-for="CreateEntryVM.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CreateEntryVM.At"></label>
+                    <input asp-for="CreateEntryVM.At" class="form-control"/>
+                    <span asp-validation-for="CreateEntryVM.At" class="text-danger"></span>
+                </div>
+                <div class="mt-2 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Entry/create.js"></script>
+}

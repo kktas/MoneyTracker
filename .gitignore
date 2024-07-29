@@ -3,6 +3,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Remove appsettings files except the example one
+appsettings.json
+appsettings.*.json
+!appsettings.example.json
+
 # User-specific files
 *.rsuser
 *.suo

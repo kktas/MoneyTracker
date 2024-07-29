@@ -1,0 +1,96 @@
+﻿@using MoneyTracker.ViewModels.EntryVM
+
+@model EntryIndexPageVM
+
+@{
+    ViewBag.Title = "Kayıtlar";
+}
+
+<h3>@(ViewBag.Title)</h3>
+<form method="get" class="row g-3 align-items-center mb-3">
+    <div class="col-auto">
+        <label asp-for="SearchOptions.StartAt"></label>
+        <input asp-for="SearchOptions.StartAt" asp-placeholder="{'name': 'startAt'}" class="form-control" />
+        <span asp-validation-for="SearchOptions.StartAt" class="text-danger"></span>
+    </div> 
+    <div class="col-auto">
+        <label asp-for="SearchOptions.EndAt"></label>
+        <input asp-for="SearchOptions.EndAt" asp-placeholder="{'name': 'endAt'}" class="form-control" />
+        <span asp-validation-for="SearchOptions.EndAt" class="text-danger"></span>
+    </div>
+    <div class="col-auto pt-4">
+        <button type="submit" class="btn btn-primary">Ara</button>
+    </div>
+</form>
+
+<table class="table table-bordered w-100">
+    <thead>
+        <th>Tarih</th>
+        <th>İşlem Türü</th>
+        <th>Miktar</th>
+        <th>Açıklama</th>
+        <th class="w-1">
+            <a  href="/money-tracker/create" class="btn btn-sm btn-primary">Yeni</a>
+        </th>
+    </thead>
+    <tbody>
+        @foreach (var entry in Model.Entries)
+        {
+            var rowClass= entry.EntryTypeId == 1 ?"text-danger": "text-success" ;
+            var atFormatted = entry.At.ToString("dd/MM/yyyy");
+            var entryTypeName = entry.EntryType.Name;
+            var amountFormatted = $"{entry.Amount} {entry.Currency.Symbol}";
+            var entryDescription = entry.Description;
+            
+            <tr class="@rowClass">
+                <td> @atFormatted</td>
+                <td> @entryTypeName</td>
+                <td> @amountFormatted</td>
+                <td> @entryDescription</td>
+                <td class="d-flex justify-content-center"> <a href="javascript:showDeleteEntryModal('@(rowClass)',@(entry.Id),'@(atFormatted)','@(entryTypeName)','@(amountFormatted)','@(entryDescription)')" class="btn btn-sm btn-danger">Sil</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Modals{
+    <div class="modal fade" id="deleteEntryModal" tabindex="-1" role="dialog" aria-labelledby="deleteEntryModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="deleteEntryModalLabel" >Silmek İstediğinize Emin Misiniz?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered w-100">
+                        <thead>
+                            <th>Tarih</th>
+                            <th>İşlem Türü</th>
+                            <th>Miktar</th>
+                            <th>Açıklama</th>
+                        </thead>
+                        <tbody>
+                                <tr id="delete-entry-modal-row">
+                                    <td id="delete-entry-modal-at" ></td>
+                                    <td id="delete-entry-modal-entrytype" ></td>
+                                    <td id="delete-entry-modal-amount"></td>
+                                    <td id="delete-entry-modal-description"></td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0)" id="delete-entry-modal-delete-btn" class="btn btn-danger">Sil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script src="~/js/Entry/index.js"></script>
+ @*    <script>
+        let createEntryFormActionUrl =  "@(Url.Action("Create", "Entry"))";
+    </script> *@
+}
